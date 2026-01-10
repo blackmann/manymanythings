@@ -29,6 +29,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSPopoverDelegate {
         popover.delegate = self
 
         let contentView = ContentView()
+            .background(Color(NSColor.windowBackgroundColor))
             .environment(iconManager)
         popover.contentViewController = NSHostingController(rootView: contentView)
 
