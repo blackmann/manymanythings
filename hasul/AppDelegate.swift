@@ -12,6 +12,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSPopoverDelegate {
     private var statusItem: NSStatusItem!
     private var popover: NSPopover!
     private var iconManager = MenuBarIconManager()
+    private var calendarManager = CalendarManager()
+    private var eventManager = EventKitManager()
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
@@ -31,6 +33,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSPopoverDelegate {
         let contentView = ContentView()
             .background(Color(NSColor.windowBackgroundColor))
             .environment(iconManager)
+            .environment(calendarManager)
+            .environment(eventManager)
         popover.contentViewController = NSHostingController(rootView: contentView)
 
         setupIconObserver()

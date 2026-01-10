@@ -5,8 +5,8 @@
 //  Created by De-Great Yartey on 10/01/2026.
 //
 
-import SwiftUI
 import AppKit
+import SwiftUI
 
 @Observable
 class MenuBarIconManager {
@@ -27,17 +27,21 @@ class MenuBarIconManager {
     }
 
     private func createMenuBarIcon(text: String) -> NSImage {
-        let size = NSSize(width: 22, height: 16)
+        let size = NSSize(width: 20, height: 16)
         let image = NSImage(size: size)
 
         image.lockFocus()
 
         NSColor.white.setFill()
-        NSBezierPath(roundedRect: NSRect(origin: .zero, size: size), xRadius: 2, yRadius: 2).fill()
+        NSBezierPath(
+            roundedRect: NSRect(origin: .zero, size: size),
+            xRadius: 4,
+            yRadius: 4
+        ).fill()
 
         let textAttributes: [NSAttributedString.Key: Any] = [
             .font: NSFont.systemFont(ofSize: 12, weight: .bold),
-            .foregroundColor: NSColor.black
+            .foregroundColor: NSColor.black,
         ]
 
         let textSize = (text as NSString).size(withAttributes: textAttributes)

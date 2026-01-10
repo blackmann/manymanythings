@@ -9,31 +9,30 @@ import SwiftUI
 
 struct ContentView: View {
     @Environment(MenuBarIconManager.self) private var iconManager
+    @Environment(CalendarManager.self) private var calendarManager
+    @Environment(EventKitManager.self) private var eventManager
 
     var body: some View {
         VStack(spacing: 0) {
-            headerView
+            VStack(spacing: 0) {
+                CalendarView()
+                    .padding(.vertical, 8)
 
-            Divider()
-
-            ScrollView {
-                mainContent
+                Hr()
             }
+            .padding(.bottom, 4)
+            .background(Color.secondary.opacity(0.05))
 
-            Divider()
+            EventListView()
+                .frame(maxHeight: .infinity)
 
-            footerView
+            Hr()
+
+            TabsBar()
+                .padding(.horizontal, 10)
+                .padding(.vertical, 3)
         }
-        .frame(width: 250, height: 440)
-    }
-
-    private var headerView: some View {
-        HStack {
-            Text("Hasul")
-                .font(.headline)
-            Spacer()
-        }
-        .padding()
+        .frame(width: 230, height: 400)
     }
 
     private var mainContent: some View {
@@ -57,17 +56,6 @@ struct ContentView: View {
                 iconManager.iconText = "3"
             }
             .buttonStyle(.bordered)
-        }
-        .padding()
-    }
-
-    private var footerView: some View {
-        HStack {
-            Spacer()
-            Button("Quit") {
-                NSApplication.shared.terminate(nil)
-            }
-            .buttonStyle(.borderless)
         }
         .padding()
     }
