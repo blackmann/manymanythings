@@ -6,16 +6,14 @@
 //
 
 import SwiftUI
-import CoreData
 
 @main
 struct hasulApp: App {
-    let persistenceController = PersistenceController.shared
+    @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
 
     var body: some Scene {
-        WindowGroup {
-            ContentView()
-                .environment(\.managedObjectContext, persistenceController.container.viewContext)
+        Settings {
+            EmptyView()
         }
     }
 }
