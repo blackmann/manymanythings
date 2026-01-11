@@ -133,6 +133,11 @@ struct TodoFormView: View {
                 .padding(8)
             }
         }
+        .onAppear {
+            if let todo = todo {
+                formState.load(from: todo)
+            }
+        }
     }
 
     private func saveTodo() {

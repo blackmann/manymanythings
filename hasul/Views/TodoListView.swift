@@ -129,8 +129,32 @@ struct TodoRow: View {
                 .font(.system(size: 12, weight: .medium))
                 .foregroundStyle(todo.isCompleted ? .secondary : .primary)
                 .strikethrough(todo.isCompleted)
+                .lineLimit(2)
 
             Spacer()
+
+            if isHovering {
+                Button(action: {
+                    manager.setWorkOnDateToToday(todo)
+                }) {
+                    Image(systemName: "arrow.down")
+                        .font(.system(size: 10))
+                        .foregroundStyle(.secondary)
+                }
+                .buttonStyle(.plain)
+                .hoverableButton()
+                .help("Work on today")
+            } else if todo.workOnDate != nil {
+                Button(action: {
+                    manager.clearWorkOnDate(todo)
+                }) {
+                    Circle()
+                        .fill(.secondary)
+                        .frame(width: 6, height: 6)
+                }
+                .buttonStyle(.plain)
+                .help("Has scheduled date. Click to remove.")
+            }
         }
         .padding(8)
         .background(
@@ -143,7 +167,50 @@ struct TodoRow: View {
             isHovering = hovering
         }
         .onTapGesture {
-            navigationManager.navigateToTodoForm(todo: todo)
+            navigationManager.navigateToTodoDetail(todo: todo)
+        }
+        .contextMenu {
+            Button(action: {
+                navigationManager.navigateToTodoDetail(todo: todo)
+            }) {
+                Label("View", systemImage: "eye")
+            }
+
+            Button(action: {
+                navigationManager.navigateToTodoForm(todo: todo)
+            }) {
+                Label("Edit", systemImage: "pencil")
+            }
+
+            Divider()
+
+            Button(action: {
+                manager.setWorkOnDateToToday(todo)
+            }) {
+                Label("Work on Today", systemImage: "arrow.down")
+            }
+
+            Button(action: {
+                manager.setWorkOnDateToTomorrow(todo)
+            }) {
+                Label("Work on Tomorrow", systemImage: "arrow.right")
+            }
+
+            if todo.workOnDate != nil {
+                Button(action: {
+                    manager.clearWorkOnDate(todo)
+                }) {
+                    Label("Clear Scheduled Date", systemImage: "xmark.circle")
+                }
+            }
+
+            Divider()
+
+            Button(role: .destructive, action: {
+                manager.deleteTodo(todo)
+            }) {
+                Label("Delete", systemImage: "trash")
+            }
         }
     }
 }

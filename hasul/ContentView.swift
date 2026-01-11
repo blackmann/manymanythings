@@ -22,6 +22,8 @@ struct ContentView: View {
                     calendarPageContent
                 case .todos:
                     todosPageContent
+                case .todoDetail:
+                    todoDetailPageContent
                 case .todoForm:
                     todoFormPageContent
                 case .projects:
@@ -59,6 +61,13 @@ struct ContentView: View {
 
     private var todosPageContent: some View {
         TodoListView()
+    }
+
+    @ViewBuilder
+    private var todoDetailPageContent: some View {
+        if let todo = navigationManager.editingTodo {
+            TodoDetailView(todo: todo)
+        }
     }
 
     private var todoFormPageContent: some View {

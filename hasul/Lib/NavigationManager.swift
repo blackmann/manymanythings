@@ -4,6 +4,7 @@ import CoreData
 enum AppPage {
     case calendar
     case todos
+    case todoDetail
     case todoForm
     case projects
     case projectForm
@@ -24,6 +25,11 @@ class NavigationManager {
     func navigateToTodos() {
         currentPage = .todos
         editingTodo = nil
+    }
+
+    func navigateToTodoDetail(todo: Todo) {
+        editingTodo = todo
+        currentPage = .todoDetail
     }
 
     func navigateToTodoForm(todo: Todo? = nil) {

@@ -5,6 +5,7 @@ import Foundation
 class TodoManager {
     private let context: NSManagedObjectContext
 
+    var onTodosChanged: (() -> Void)?
     var todos: [Todo] = []
     var projects: [Project] = []
     var selectedProject: Project?
@@ -12,6 +13,15 @@ class TodoManager {
 
     var uncategorizedTodoCount: Int {
         todos.filter { $0.project == nil }.count
+    }
+
+    var todaysTodoCount: Int {
+        let today = Calendar.current.startOfDay(for: Date())
+        return todos.filter { todo in
+            guard !todo.isCompleted else { return false }
+            guard let workOnDate = todo.workOnDate else { return false }
+            return Calendar.current.startOfDay(for: workOnDate) == today
+        }.count
     }
 
     var filteredTodos: [Todo] {
@@ -47,6 +57,8 @@ class TodoManager {
         } catch {
             print("Failed to fetch todos: \(error)")
         }
+
+        onTodosChanged?()
     }
 
     func createTodo(title: String, description: String? = nil, project: Project? = nil) {
@@ -75,6 +87,25 @@ class TodoManager {
         todo.isCompleted.toggle()
         todo.completedAt = todo.isCompleted ? Date() : nil
 
+        saveContext()
+        fetchTodos()
+    }
+
+    func setWorkOnDateToToday(_ todo: Todo) {
+        todo.workOnDate = Calendar.current.startOfDay(for: Date())
+        saveContext()
+        fetchTodos()
+    }
+
+    func setWorkOnDateToTomorrow(_ todo: Todo) {
+        let tomorrow = Calendar.current.date(byAdding: .day, value: 1, to: Date())!
+        todo.workOnDate = Calendar.current.startOfDay(for: tomorrow)
+        saveContext()
+        fetchTodos()
+    }
+
+    func clearWorkOnDate(_ todo: Todo) {
+        todo.workOnDate = nil
         saveContext()
         fetchTodos()
     }
@@ -159,6 +190,15 @@ class TodoManager {
     func clearFilter() {
         selectedProject = nil
         searchText = ""
+    }
+
+    func todosForDate(_ date: Date) -> [Todo] {
+        let calendar = Calendar.current
+        let startOfDay = calendar.startOfDay(for: date)
+        return todos.filter { todo in
+            guard let workOnDate = todo.workOnDate else { return false }
+            return calendar.startOfDay(for: workOnDate) == startOfDay
+        }
     }
 
     private func saveContext() {

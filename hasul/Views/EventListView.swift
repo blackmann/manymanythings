@@ -24,22 +24,56 @@ struct HatchedPattern: View {
 struct EventListView: View {
     @Environment(CalendarManager.self) private var manager
     @Environment(EventKitManager.self) private var eventManager
+    @Environment(\.managedObjectContext) private var viewContext
     @State private var events: [EKEvent] = []
+
+    @FetchRequest private var todosForSelectedDate: FetchedResults<Todo>
+
+    init() {
+        let startOfToday = Calendar.current.startOfDay(for: Date())
+        let endOfToday = Calendar.current.date(byAdding: .day, value: 1, to: startOfToday)!
+        _todosForSelectedDate = FetchRequest(
+            sortDescriptors: [NSSortDescriptor(keyPath: \Todo.createdAt, ascending: false)],
+            predicate: NSPredicate(format: "workOnDate >= %@ AND workOnDate < %@", startOfToday as NSDate, endOfToday as NSDate)
+        )
+    }
 
     var body: some View {
         ScrollView {
-            if events.isEmpty {
+            if events.isEmpty && todosForSelectedDate.isEmpty {
                 emptyStateView
             } else {
                 VStack(spacing: 0) {
                     ForEach(events, id: \.eventIdentifier) { event in
                         EventRow(event: event)
                     }
+
+                    if !todosForSelectedDate.isEmpty {
+                        if !events.isEmpty {
+                            Divider()
+                                .padding(.vertical, 8)
+                                .padding(.horizontal, 8)
+                        }
+
+                        ForEach(todosForSelectedDate, id: \.id) { todo in
+                            DateTodoRow(todo: todo)
+                        }
+                    }
                 }
+                .padding(.top, 4)
             }
         }
         .task(id: manager.selectedDate) {
             await loadEvents()
+        }
+        .onChange(of: manager.selectedDate, initial: true) { _, newDate in
+            let startOfDay = Calendar.current.startOfDay(for: newDate)
+            let endOfDay = Calendar.current.date(byAdding: .day, value: 1, to: startOfDay)!
+            todosForSelectedDate.nsPredicate = NSPredicate(
+                format: "workOnDate >= %@ AND workOnDate < %@",
+                startOfDay as NSDate,
+                endOfDay as NSDate
+            )
         }
     }
 
@@ -49,7 +83,7 @@ struct EventListView: View {
                 .font(.system(size: 24))
                 .foregroundStyle(.tertiary)
 
-            Text("No events")
+            Text("No events or todos")
                 .font(.system(size: 12))
                 .foregroundStyle(.secondary)
         }
@@ -66,6 +100,95 @@ struct EventListView: View {
             for: startOfDay...endOfDay
         )
         events = eventsByDate[startOfDay] ?? []
+    }
+}
+
+struct DateTodoRow: View {
+    let todo: Todo
+    @Environment(TodoManager.self) private var manager
+    @Environment(NavigationManager.self) private var navigationManager
+    @State private var isHovering = false
+
+    private var projectColor: Color {
+        if let color = todo.project?.color {
+            return Color(hex: color)
+        }
+        return Color(hex: "#9CA3AF")
+    }
+
+    var body: some View {
+        HStack(spacing: 8) {
+            Button(action: {
+                manager.toggleTodoCompletion(todo)
+            }) {
+                Image(systemName: todo.isCompleted ? "checkmark.circle.fill" : "circle")
+                    .font(.system(size: 14))
+                    .foregroundStyle(todo.isCompleted ? .green : projectColor)
+            }
+            .buttonStyle(.plain)
+
+            Text(todo.title ?? "")
+                .font(.system(size: 12, weight: .medium))
+                .foregroundStyle(todo.isCompleted ? .secondary : .primary)
+                .strikethrough(todo.isCompleted)
+                .lineLimit(2)
+
+            Spacer()
+        }
+        .padding(4)
+        .background(
+            RoundedRectangle(cornerRadius: 6)
+                .fill(isHovering ? Color.secondary.opacity(0.1) : Color.clear)
+        )
+        .padding(.horizontal, 4)
+        .contentShape(Rectangle())
+        .onHover { hovering in
+            isHovering = hovering
+        }
+        .onTapGesture {
+            navigationManager.navigateToTodoDetail(todo: todo)
+        }
+        .contextMenu {
+            Button(action: {
+                navigationManager.navigateToTodoDetail(todo: todo)
+            }) {
+                Label("View", systemImage: "eye")
+            }
+
+            Button(action: {
+                navigationManager.navigateToTodoForm(todo: todo)
+            }) {
+                Label("Edit", systemImage: "pencil")
+            }
+
+            Divider()
+
+            Button(action: {
+                manager.setWorkOnDateToToday(todo)
+            }) {
+                Label("Work on Today", systemImage: "arrow.down")
+            }
+
+            Button(action: {
+                manager.setWorkOnDateToTomorrow(todo)
+            }) {
+                Label("Work on Tomorrow", systemImage: "arrow.right")
+            }
+
+            Button(action: {
+                manager.clearWorkOnDate(todo)
+            }) {
+                Label("Remove from Date", systemImage: "xmark.circle")
+            }
+
+            Divider()
+
+            Button(role: .destructive, action: {
+                manager.deleteTodo(todo)
+            }) {
+                Label("Delete", systemImage: "trash")
+            }
+        }
     }
 }
 
@@ -121,6 +244,7 @@ struct EventRow: View {
                 Text(event.title ?? "")
                     .font(.system(size: 12, weight: .medium))
                     .foregroundStyle(.primary)
+                    .lineLimit(2)
 
                 if !event.isAllDay {
                     Text(timeText)
