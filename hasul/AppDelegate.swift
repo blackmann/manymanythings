@@ -14,6 +14,9 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSPopoverDelegate {
     private var iconManager = MenuBarIconManager()
     private var calendarManager = CalendarManager()
     private var eventManager = EventKitManager()
+    private var navigationManager = NavigationManager()
+    private var todoManager = TodoManager()
+    private var todoFormState = TodoFormState()
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
@@ -25,8 +28,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSPopoverDelegate {
         }
 
         popover = NSPopover()
-        popover.contentSize = NSSize(width: 250, height: 440)
-        popover.behavior = .transient  // Auto-dismiss on outside click
+        popover.contentSize = NSSize(width: 230, height: 400)
+        popover.behavior = .transient
         popover.animates = true
         popover.delegate = self
 
@@ -35,9 +38,13 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSPopoverDelegate {
             .environment(iconManager)
             .environment(calendarManager)
             .environment(eventManager)
+            .environment(navigationManager)
+            .environment(todoManager)
+            .environment(todoFormState)
         popover.contentViewController = NSHostingController(rootView: contentView)
 
         setupIconObserver()
+        setupNavigationObserver()
     }
 
     @objc private func togglePopover() {
@@ -69,6 +76,19 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSPopoverDelegate {
             }
         }
         observeIcon()
+    }
+
+    private func setupNavigationObserver() {
+        func observeNavigation() {
+            withObservationTracking {
+                _ = navigationManager.currentPage
+            } onChange: {
+                Task { @MainActor in
+                    observeNavigation()
+                }
+            }
+        }
+        observeNavigation()
     }
 
     // MARK: - NSPopoverDelegate

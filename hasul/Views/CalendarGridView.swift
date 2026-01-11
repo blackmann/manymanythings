@@ -40,8 +40,8 @@ struct WeekdayHeaderRow: View {
 
     var body: some View {
         HStack(spacing: 0) {
-            ForEach(weekdaySymbols, id: \.self) { day in
-                Text(day)
+            ForEach(weekdaySymbols.indices, id: \.self) { index in
+                Text(weekdaySymbols[index])
                     .font(.system(size: 10, weight: .medium))
                     .foregroundStyle(.secondary)
                     .frame(maxWidth: .infinity)

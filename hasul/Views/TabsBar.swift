@@ -9,13 +9,19 @@ import SwiftUI
 
 struct HoverableButtonStyle: ViewModifier {
     @State private var isHovering = false
+    var isActive: Bool = false
 
     func body(content: Content) -> some View {
         content
             .padding(2)
             .background(
                 RoundedRectangle(cornerRadius: 4)
-                    .fill(isHovering ? Color.secondary.opacity(0.1) : Color.clear)
+                    .fill(
+                        isActive
+                            ? Color.secondary.opacity(0.15)
+                            : (isHovering
+                                ? Color.secondary.opacity(0.1) : Color.clear)
+                    )
             )
             .contentShape(Rectangle())
             .onHover { hovering in
@@ -25,23 +31,50 @@ struct HoverableButtonStyle: ViewModifier {
 }
 
 extension View {
-    func hoverableButton() -> some View {
-        modifier(HoverableButtonStyle())
+    func hoverableButton(isActive: Bool = false) -> some View {
+        modifier(HoverableButtonStyle(isActive: isActive))
     }
 }
 
 struct TabsBar: View {
+    @Environment(NavigationManager.self) private var navigationManager
+
     var body: some View {
         VStack {
             HStack(spacing: 0) {
-                Button(action: {}) {
-                    Image(systemName: "plus")
+
+                Button(action: {
+                    navigationManager.navigateToCalendar()
+                }) {
+                    Image(systemName: "calendar")
+                        .hoverableButton(
+                            isActive: navigationManager.currentPage == .calendar
+                        )
+                }
+                .buttonStyle(.plain)
+
+                Button(action: {
+                    navigationManager.navigateToProjects()
+                }) {
+                    Image(systemName: "folder")
                         .hoverableButton()
                 }
                 .buttonStyle(.plain)
-                
-                Button(action: {}) {
+
+                Button(action: {
+                    navigationManager.navigateToTodos()
+                }) {
                     Image(systemName: "checklist.unchecked")
+                        .hoverableButton(
+                            isActive: navigationManager.currentPage == .todos
+                        )
+                }
+                .buttonStyle(.plain)
+
+                Button(action: {
+                    navigationManager.navigateToTodoForm()
+                }) {
+                    Image(systemName: "plus")
                         .hoverableButton()
                 }
                 .buttonStyle(.plain)

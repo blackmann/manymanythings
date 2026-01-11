@@ -11,8 +11,37 @@ struct ContentView: View {
     @Environment(MenuBarIconManager.self) private var iconManager
     @Environment(CalendarManager.self) private var calendarManager
     @Environment(EventKitManager.self) private var eventManager
+    @Environment(NavigationManager.self) private var navigationManager
+    @Environment(TodoManager.self) private var todoManager
 
     var body: some View {
+        VStack(spacing: 0) {
+            Group {
+                switch navigationManager.currentPage {
+                case .calendar:
+                    calendarPageContent
+                case .todos:
+                    todosPageContent
+                case .todoForm:
+                    todoFormPageContent
+                case .projects:
+                    projectsPageContent
+                case .projectForm:
+                    projectFormPageContent
+                }
+            }
+            .frame(maxHeight: .infinity, alignment: .top)
+
+            Hr()
+
+            TabsBar()
+                .padding(.horizontal, 10)
+                .padding(.vertical, 3)
+        }
+        .frame(width: 230, height: 400)
+    }
+
+    private var calendarPageContent: some View {
         VStack(spacing: 0) {
             VStack(spacing: 0) {
                 CalendarView()
@@ -25,39 +54,23 @@ struct ContentView: View {
 
             EventListView()
                 .frame(maxHeight: .infinity)
-
-            Hr()
-
-            TabsBar()
-                .padding(.horizontal, 10)
-                .padding(.vertical, 3)
         }
-        .frame(width: 230, height: 400)
     }
 
-    private var mainContent: some View {
-        VStack(spacing: 12) {
-            Text("MenuBar App")
-                .font(.title2)
+    private var todosPageContent: some View {
+        TodoListView()
+    }
 
-            Text("Current icon: \(iconManager.iconText)")
-                .font(.subheadline)
-                .foregroundStyle(.secondary)
+    private var todoFormPageContent: some View {
+        TodoFormView(todo: navigationManager.editingTodo)
+    }
 
-            Divider()
-                .padding(.vertical)
+    private var projectsPageContent: some View {
+        ProjectListView()
+    }
 
-            Button("Change Icon to 5") {
-                iconManager.iconText = "5"
-            }
-            .buttonStyle(.borderedProminent)
-
-            Button("Reset Icon to 3") {
-                iconManager.iconText = "3"
-            }
-            .buttonStyle(.bordered)
-        }
-        .padding()
+    private var projectFormPageContent: some View {
+        ProjectFormView(project: navigationManager.editingProject)
     }
 }
 
