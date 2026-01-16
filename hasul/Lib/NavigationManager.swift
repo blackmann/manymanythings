@@ -28,11 +28,13 @@ class NavigationManager {
     }
 
     func navigateToTodoDetail(todo: Todo) {
+        previousPage = currentPage
         editingTodo = todo
         currentPage = .todoDetail
     }
 
     func navigateToTodoForm(todo: Todo? = nil) {
+        previousPage = currentPage
         editingTodo = todo
         currentPage = .todoForm
     }
@@ -49,8 +51,9 @@ class NavigationManager {
     }
 
     func goBack() {
+        editingTodo = nil
         editingProject = nil
-        currentPage = previousPage ?? .projects
+        currentPage = previousPage ?? .calendar
         previousPage = nil
     }
 

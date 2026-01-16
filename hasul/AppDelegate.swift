@@ -18,6 +18,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSPopoverDelegate {
     private var todoManager = TodoManager()
     private var todoFormState = TodoFormState()
     private var eventMonitor: Any?
+    private var midnightTimer: Timer?
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
@@ -52,6 +53,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSPopoverDelegate {
             self?.updateTodoCount()
         }
         todoManager.fetchTodos()
+
+        setupMidnightTimer()
     }
 
     @objc private func togglePopover() {
@@ -120,6 +123,38 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSPopoverDelegate {
     private func updateTodoCount() {
         let count = todoManager.todaysTodoCount
         iconManager.iconText = "\(count)"
+    }
+
+    private func setupMidnightTimer() {
+        scheduleMidnightRefresh()
+
+        NSWorkspace.shared.notificationCenter.addObserver(
+            self,
+            selector: #selector(handleWake),
+            name: NSWorkspace.didWakeNotification,
+            object: nil
+        )
+    }
+
+    @objc private func handleWake() {
+        updateTodoCount()
+        scheduleMidnightRefresh()
+    }
+
+    private func scheduleMidnightRefresh() {
+        midnightTimer?.invalidate()
+
+        let calendar = Calendar.current
+        guard let tomorrow = calendar.date(byAdding: .day, value: 1, to: Date()),
+              let nextMidnight = calendar.date(bySettingHour: 0, minute: 0, second: 1, of: tomorrow) else {
+            return
+        }
+
+        let interval = nextMidnight.timeIntervalSinceNow
+        midnightTimer = Timer.scheduledTimer(withTimeInterval: interval, repeats: false) { [weak self] _ in
+            self?.updateTodoCount()
+            self?.scheduleMidnightRefresh()
+        }
     }
 
     // MARK: - NSPopoverDelegate

@@ -114,6 +114,11 @@ struct TodoRow: View {
         return Color(hex: "#9CA3AF")
     }
 
+    private var isScheduledForToday: Bool {
+        guard let workOnDate = todo.workOnDate else { return false }
+        return Calendar.current.isDateInToday(workOnDate)
+    }
+
     var body: some View {
         HStack(spacing: 8) {
             Button(action: {
@@ -133,28 +138,41 @@ struct TodoRow: View {
 
             Spacer()
 
-            if isHovering {
+            ZStack {
+                // Always present dot (visible or invisible based on state)
+                Button(action: {
+                    if todo.workOnDate != nil {
+                        manager.clearWorkOnDate(todo)
+                    }
+                }) {
+                    Circle()
+                        .fill(todo.workOnDate != nil
+                            ? (isScheduledForToday ? Color.blue : Color.secondary)
+                            : Color.clear)
+                        .frame(width: 6, height: 6)
+                }
+                .buttonStyle(.plain)
+                .opacity(isHovering ? 0 : 1)
+                .help(todo.workOnDate != nil ? "Has scheduled date. Click to remove." : "")
+
+                // Hover button (same position, shown on hover)
                 Button(action: {
                     manager.setWorkOnDateToToday(todo)
                 }) {
                     Image(systemName: "arrow.down")
                         .font(.system(size: 10))
                         .foregroundStyle(.secondary)
+                        .padding(2)
+                        .background(
+                            RoundedRectangle(cornerRadius: 4)
+                                .fill(Color.secondary.opacity(0.1))
+                        )
                 }
                 .buttonStyle(.plain)
-                .hoverableButton()
+                .opacity(isHovering ? 1 : 0)
                 .help("Work on today")
-            } else if todo.workOnDate != nil {
-                Button(action: {
-                    manager.clearWorkOnDate(todo)
-                }) {
-                    Circle()
-                        .fill(.secondary)
-                        .frame(width: 6, height: 6)
-                }
-                .buttonStyle(.plain)
-                .help("Has scheduled date. Click to remove.")
             }
+            .frame(width: 20)
         }
         .padding(8)
         .background(

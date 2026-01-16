@@ -27,14 +27,14 @@ struct TodoDetailView: View {
 
                 HStack(spacing: 4) {
                     Button(action: {
-                        navigationManager.navigateToTodos()
+                        navigationManager.goBack()
                     }) {
                         Image(systemName: "chevron.left")
                             .font(.system(size: 13))
                     }
                     .hoverableButton()
                     .buttonStyle(.plain)
-                    .help("Back to list")
+                    .help("Back")
 
                     Button(action: {
                         navigationManager.navigateToTodoForm(todo: todo)
@@ -61,49 +61,62 @@ struct TodoDetailView: View {
             .background(Color.secondary.opacity(0.05))
 
             ScrollView {
+                if let project = todo.project {
+                    HStack {
+                        HStack(spacing: 4) {
+                            Circle()
+                                .fill(.white)
+                                .frame(width: 8, height: 8)
+
+                            Text(project.name ?? "Unnamed")
+                                .font(.system(size: 12, weight: .medium))
+                                .foregroundStyle(.white)
+                        }
+                        .padding(.horizontal, 6)
+                        .padding(.vertical, 1)
+                        .background(projectColor)
+                        .clipShape(RoundedRectangle(cornerRadius: 8))
+
+                        Spacer()
+                    }
+                    .padding(.top, 4)
+                }
+
                 VStack(alignment: .leading, spacing: 12) {
                     HStack(spacing: 8) {
                         Button(action: {
                             manager.toggleTodoCompletion(todo)
                         }) {
-                            Image(systemName: todo.isCompleted ? "checkmark.circle.fill" : "circle")
-                                .font(.system(size: 16))
-                                .foregroundStyle(todo.isCompleted ? .green : projectColor)
+                            Image(
+                                systemName: todo.isCompleted
+                                    ? "checkmark.circle.fill" : "circle"
+                            )
+                            .font(.system(size: 16))
+                            .foregroundStyle(
+                                todo.isCompleted ? .green : projectColor
+                            )
                         }
                         .buttonStyle(.plain)
 
                         Text(todo.title ?? "")
                             .font(.system(size: 14, weight: .medium))
-                            .foregroundStyle(todo.isCompleted ? .secondary : .primary)
+                            .foregroundStyle(
+                                todo.isCompleted ? .secondary : .primary
+                            )
                             .strikethrough(todo.isCompleted)
                     }
 
-                    if let description = todo.descriptionText, !description.isEmpty {
+                    if let description = todo.descriptionText,
+                        !description.isEmpty
+                    {
                         VStack(alignment: .leading, spacing: 4) {
                             Text("Description")
                                 .font(.system(size: 11, weight: .semibold))
                                 .foregroundStyle(.secondary)
 
                             Text(description)
-                                .font(.system(size: 12))
+                                .font(.system(size: 13))
                                 .foregroundStyle(.primary)
-                        }
-                    }
-
-                    if let project = todo.project {
-                        VStack(alignment: .leading, spacing: 4) {
-                            Text("Project")
-                                .font(.system(size: 11, weight: .semibold))
-                                .foregroundStyle(.secondary)
-
-                            HStack(spacing: 6) {
-                                Circle()
-                                    .fill(projectColor)
-                                    .frame(width: 8, height: 8)
-
-                                Text(project.name ?? "Unnamed")
-                                    .font(.system(size: 12))
-                            }
                         }
                     }
 
@@ -123,16 +136,33 @@ struct TodoDetailView: View {
                             }
                         }
                     }
+
+                    if let completedAt = todo.completedAt {
+                        VStack(alignment: .leading, spacing: 4) {
+                            Text("Completed")
+                                .font(.system(size: 11, weight: .semibold))
+                                .foregroundStyle(.secondary)
+
+                            HStack(spacing: 6) {
+                                Image(systemName: "checkmark.circle")
+                                    .font(.system(size: 10))
+                                    .foregroundStyle(.green)
+
+                                Text(completedAt, style: .date)
+                                    .font(.system(size: 12))
+                            }
+                        }
+                    }
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(8)
             }
+            .padding(.horizontal, 8)
         }
     }
 
     private func deleteTodo() {
         manager.deleteTodo(todo)
-        navigationManager.navigateToTodos()
+        navigationManager.goBack()
     }
 }
 
@@ -149,7 +179,8 @@ struct TodoDetailView: View {
     let todo = Todo(context: context)
     todo.id = UUID()
     todo.title = "Review pull requests"
-    todo.descriptionText = "Check the pending PRs from the team and provide feedback"
+    todo.descriptionText =
+        "Check the pending PRs from the team and provide feedback"
     todo.isCompleted = false
     todo.createdAt = Date()
     todo.project = workProject
