@@ -1,6 +1,6 @@
 //
 //  AppDelegate.swift
-//  hasul
+//  manymanythings
 //
 //  Created by De-Great Yartey on 10/01/2026.
 //

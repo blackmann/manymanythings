@@ -7,13 +7,13 @@
 	objects = {
 
 /* Begin PBXFileReference section */
-		BC780DF52F123D2700B5AE55 /* hasul.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = hasul.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		BC780DF52F123D2700B5AE55 /* manymanythings.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = manymanythings.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		BC780DF72F123D2700B5AE55 /* hasul */ = {
+		BC780DF72F123D2700B5AE55 /* manymanythings */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = hasul;
+			path = manymanythings;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -32,7 +32,7 @@
 		BC780DEC2F123D2700B5AE55 = {
 			isa = PBXGroup;
 			children = (
-				BC780DF72F123D2700B5AE55 /* hasul */,
+				BC780DF72F123D2700B5AE55 /* manymanythings */,
 				BC780DF62F123D2700B5AE55 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -40,7 +40,7 @@
 		BC780DF62F123D2700B5AE55 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				BC780DF52F123D2700B5AE55 /* hasul.app */,
+				BC780DF52F123D2700B5AE55 /* manymanythings.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -48,9 +48,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		BC780DF42F123D2700B5AE55 /* hasul */ = {
+		BC780DF42F123D2700B5AE55 /* manymanythings */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = BC780E052F123D2700B5AE55 /* Build configuration list for PBXNativeTarget "hasul" */;
+			buildConfigurationList = BC780E052F123D2700B5AE55 /* Build configuration list for PBXNativeTarget "manymanythings" */;
 			buildPhases = (
 				BC780DF12F123D2700B5AE55 /* Sources */,
 				BC780DF22F123D2700B5AE55 /* Frameworks */,
@@ -61,13 +61,13 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				BC780DF72F123D2700B5AE55 /* hasul */,
+				BC780DF72F123D2700B5AE55 /* manymanythings */,
 			);
-			name = hasul;
+			name = manymanythings;
 			packageProductDependencies = (
 			);
-			productName = hasul;
-			productReference = BC780DF52F123D2700B5AE55 /* hasul.app */;
+			productName = manymanythings;
+			productReference = BC780DF52F123D2700B5AE55 /* manymanythings.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -85,7 +85,7 @@
 					};
 				};
 			};
-			buildConfigurationList = BC780DF02F123D2700B5AE55 /* Build configuration list for PBXProject "hasul" */;
+			buildConfigurationList = BC780DF02F123D2700B5AE55 /* Build configuration list for PBXProject "manymanythings" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -99,7 +99,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				BC780DF42F123D2700B5AE55 /* hasul */,
+				BC780DF42F123D2700B5AE55 /* manymanythings */,
 			);
 		};
 /* End PBXProject section */
@@ -250,7 +250,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = hasul/hasul.entitlements;
+				CODE_SIGN_ENTITLEMENTS = manymanythings/manymanythings.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
@@ -263,7 +263,7 @@
 				INFOPLIST_KEY_CFBundleDisplayName = "Many Many Things";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				INFOPLIST_KEY_LSUIElement = YES;
-				INFOPLIST_KEY_NSCalendarsFullAccessUsageDescription = "Hasul needs access to your calendar to display upcoming events.";
+				INFOPLIST_KEY_NSCalendarsFullAccessUsageDescription = "Many Many Things needs access to your calendar to display upcoming events.";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -288,7 +288,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = hasul/hasul.entitlements;
+				CODE_SIGN_ENTITLEMENTS = manymanythings/manymanythings.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
@@ -301,7 +301,7 @@
 				INFOPLIST_KEY_CFBundleDisplayName = "Many Many Things";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				INFOPLIST_KEY_LSUIElement = YES;
-				INFOPLIST_KEY_NSCalendarsFullAccessUsageDescription = "Hasul needs access to your calendar to display upcoming events.";
+				INFOPLIST_KEY_NSCalendarsFullAccessUsageDescription = "Many Many Things needs access to your calendar to display upcoming events.";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -324,7 +324,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		BC780DF02F123D2700B5AE55 /* Build configuration list for PBXProject "hasul" */ = {
+		BC780DF02F123D2700B5AE55 /* Build configuration list for PBXProject "manymanythings" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				BC780E032F123D2700B5AE55 /* Debug */,
@@ -333,7 +333,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		BC780E052F123D2700B5AE55 /* Build configuration list for PBXNativeTarget "hasul" */ = {
+		BC780E052F123D2700B5AE55 /* Build configuration list for PBXNativeTarget "manymanythings" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				BC780E062F123D2700B5AE55 /* Debug */,
