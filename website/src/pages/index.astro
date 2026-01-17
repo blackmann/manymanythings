@@ -14,35 +14,66 @@
       :root {
         font-size: 15px;
       }
+
+      @keyframes fadeUp {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .fade-up {
+        animation: fadeUp 0.6s ease-out forwards;
+        opacity: 0;
+      }
+
+      .delay-1 {
+        animation-delay: 0s;
+      }
+      .delay-2 {
+        animation-delay: 0.15s;
+      }
+      .delay-3 {
+        animation-delay: 0.3s;
+      }
     </style>
   </head>
   <body
     class="bg-[#006B41] min-h-screen flex items-center justify-center text-white font-medium py-5rem">
     <div class="max-w-300px">
-      <div class="size-4rem bg-green-900 rounded-2xl"></div>
-      <h1 class="text-white text-2xl" style="font-family: 'Ultra', serif;">
-        many many things
-      </h1>
-      <p class="opacity-80">
-        Pragmatic planner for people doing a lot of things. Many Many Things is
-        designed to help you handle one day at a time while staying motivated by
-        how far you've come.
-      </p>
-
-      <div class="mt-8">
-        <div class="rounded-t-xl bg-yellow-500 aspect-video"></div>
+      <div class="fade-up delay-1">
+        <div
+          class="size-4rem bg-green-900 rounded-2xl flex items-center justify-center">
+          <img src="/manymanythings/mmt-icon.png" width="30" />
+        </div>
+        <h1 class="text-white text-2xl" style="font-family: 'Ultra', serif;">
+          many many things
+        </h1>
+        <p class="opacity-80">
+          Pragmatic planner for people doing a lot of things. Many Many Things
+          is designed to help you handle one day at a time while staying
+          motivated by how far you've come.
+        </p>
       </div>
-      <div class="flex gap-2 bg-green-900 rounded-b-xl">
-        <div class="px-2 py-2">
-          <div class="font-bold leading-tight">♜ Backlog</div>
-          <div class="text-xs opacity-60">
-            Keep your plans here — sometimes under a project so you don't
-            forget.
+
+      <div class="mt-8 fade-up delay-2">
+        <div class="rounded-t-xl bg-green-900 aspect-video"></div>
+        <div class="flex gap-2 bg-green-900 rounded-b-xl">
+          <div class="px-2 py-2">
+            <div class="font-bold leading-tight">♜ Backlog</div>
+            <div class="text-xs opacity-60">
+              Keep your plans here — sometimes under a project so you don't
+              forget.
+            </div>
           </div>
         </div>
       </div>
 
-      <div class="mt-8">
+      <div class="mt-8 fade-up delay-3">
         <a
           class="flex p-2 bg-green-900 rounded-xl gap-2 items-center"
           href="/download">
