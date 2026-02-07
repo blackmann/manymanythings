@@ -48,7 +48,7 @@ struct TabsBar: View {
                 }) {
                     Image(systemName: "calendar")
                         .hoverableButton(
-                            isActive: navigationManager.currentPage == .calendar
+                            isActive: navigationManager.currentTab == .calendar
                         )
                 }
                 .buttonStyle(.plain)
@@ -57,7 +57,9 @@ struct TabsBar: View {
                     navigationManager.navigateToProjects()
                 }) {
                     Image(systemName: "folder")
-                        .hoverableButton()
+                        .hoverableButton(
+                            isActive: navigationManager.currentTab == .projects
+                        )
                 }
                 .buttonStyle(.plain)
 
@@ -66,7 +68,7 @@ struct TabsBar: View {
                 }) {
                     Image(systemName: "checklist.unchecked")
                         .hoverableButton(
-                            isActive: navigationManager.currentPage == .todos
+                            isActive: navigationManager.currentTab == .todos
                         )
                 }
                 .buttonStyle(.plain)
@@ -89,7 +91,7 @@ struct TabsBar: View {
                 }
                 .buttonStyle(.plain)
             }
-            .font(.system(size: 10))
+            .font(.system(size: 12))
             .fontWeight(.bold)
             .foregroundStyle(.secondary)
         }

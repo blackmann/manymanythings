@@ -1,64 +1,96 @@
 import SwiftUI
 import CoreData
 
-enum AppPage {
+enum AppTab {
     case calendar
     case todos
-    case todoDetail
-    case todoForm
     case projects
-    case projectForm
+}
+
+enum AppRoute {
+    case todoDetail(Todo)
+    case todoForm(Todo?)
+    case projectForm(Project?)
+}
+
+enum NavigationAction {
+    case push
+    case pop
+    case reset
+    case switchTab
 }
 
 @Observable
 class NavigationManager {
-    var currentPage: AppPage = .calendar
-    var previousPage: AppPage?
-    var editingTodo: Todo?
-    var editingProject: Project?
+    var currentTab: AppTab = .calendar
+    var stack: [AppRoute] = []
+    var lastAction: NavigationAction = .reset
+    var navigationID: Int = 0
+
+    func switchTab(_ tab: AppTab) {
+        perform(.switchTab) {
+            currentTab = tab
+            stack.removeAll()
+        }
+    }
+
+    func push(_ route: AppRoute) {
+        perform(.push) {
+            stack.append(route)
+        }
+    }
+
+    func pop() {
+        guard !stack.isEmpty else { return }
+        perform(.pop) {
+            stack.removeLast()
+        }
+    }
+
+    func resetToRoot() {
+        perform(.reset) {
+            stack.removeAll()
+        }
+    }
 
     func navigateToCalendar() {
-        currentPage = .calendar
-        editingTodo = nil
+        switchTab(.calendar)
     }
 
     func navigateToTodos() {
-        currentPage = .todos
-        editingTodo = nil
-    }
-
-    func navigateToTodoDetail(todo: Todo) {
-        previousPage = currentPage
-        editingTodo = todo
-        currentPage = .todoDetail
-    }
-
-    func navigateToTodoForm(todo: Todo? = nil) {
-        previousPage = currentPage
-        editingTodo = todo
-        currentPage = .todoForm
+        switchTab(.todos)
     }
 
     func navigateToProjects() {
-        previousPage = currentPage
-        currentPage = .projects
+        switchTab(.projects)
+    }
+
+    func navigateToTodoDetail(todo: Todo) {
+        push(.todoDetail(todo))
+    }
+
+    func navigateToTodoForm(todo: Todo? = nil) {
+        push(.todoForm(todo))
     }
 
     func navigateToProjectForm(project: Project? = nil) {
-        previousPage = currentPage
-        editingProject = project
-        currentPage = .projectForm
+        push(.projectForm(project))
     }
 
     func goBack() {
-        editingTodo = nil
-        editingProject = nil
-        currentPage = previousPage ?? .calendar
-        previousPage = nil
+        pop()
     }
 
-    func togglePage() {
-        currentPage = currentPage == .calendar ? .todos : .calendar
-        editingTodo = nil
+    private func perform(_ action: NavigationAction, _ updates: () -> Void) {
+        lastAction = action
+        navigationID += 1
+
+        if action == .push || action == .pop {
+            withAnimation(.easeInOut(duration: 0.18)) {
+                updates()
+            }
+        } else {
+            updates()
+        }
     }
 }

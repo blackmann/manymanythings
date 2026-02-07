@@ -4,7 +4,7 @@ struct TodoDetailView: View {
     @Environment(TodoManager.self) private var manager
     @Environment(NavigationManager.self) private var navigationManager
 
-    let todo: Todo
+    @ObservedObject var todo: Todo
 
     private var projectColor: Color {
         if let color = todo.project?.color {
@@ -27,7 +27,7 @@ struct TodoDetailView: View {
 
                 HStack(spacing: 4) {
                     Button(action: {
-                        navigationManager.goBack()
+                        navigationManager.pop()
                     }) {
                         Image(systemName: "chevron.left")
                             .font(.system(size: 13))
@@ -162,7 +162,7 @@ struct TodoDetailView: View {
 
     private func deleteTodo() {
         manager.deleteTodo(todo)
-        navigationManager.goBack()
+        navigationManager.pop()
     }
 }
 

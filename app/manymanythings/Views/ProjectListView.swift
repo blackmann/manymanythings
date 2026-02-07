@@ -19,17 +19,6 @@ struct ProjectListView: View {
                     Spacer()
 
                     HStack(spacing: 4) {
-                        if navigationManager.previousPage != nil {
-                            Button(action: {
-                                navigationManager.goBack()
-                            }) {
-                                Image(systemName: "arrow.left.circle")
-                                    .font(.system(size: 13))
-                            }
-                            .hoverableButton()
-                            .buttonStyle(.plain)
-                        }
-
                         Button(action: {
                             navigationManager.navigateToProjectForm()
                         }) {

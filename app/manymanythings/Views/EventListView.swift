@@ -104,7 +104,7 @@ struct EventListView: View {
 }
 
 struct DateTodoRow: View {
-    let todo: Todo
+    @ObservedObject var todo: Todo
     @Environment(TodoManager.self) private var manager
     @Environment(NavigationManager.self) private var navigationManager
     @State private var isHovering = false

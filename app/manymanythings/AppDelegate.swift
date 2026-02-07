@@ -110,7 +110,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSPopoverDelegate {
     private func setupNavigationObserver() {
         func observeNavigation() {
             withObservationTracking {
-                _ = navigationManager.currentPage
+                _ = navigationManager.currentTab
+                _ = navigationManager.stack
             } onChange: {
                 Task { @MainActor in
                     observeNavigation()

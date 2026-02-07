@@ -102,7 +102,7 @@ struct TodoListHeader: View {
 }
 
 struct TodoRow: View {
-    let todo: Todo
+    @ObservedObject var todo: Todo
     @Environment(TodoManager.self) private var manager
     @Environment(NavigationManager.self) private var navigationManager
     @State private var isHovering = false

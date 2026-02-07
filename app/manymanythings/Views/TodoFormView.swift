@@ -36,7 +36,7 @@ struct TodoFormView: View {
                 HStack(spacing: 4) {
                     Button(action: {
                         formState.reset()
-                        navigationManager.navigateToTodos()
+                        navigationManager.pop()
                     }) {
                         Image(systemName: "x.circle")
                             .font(.system(size: 13))
@@ -160,14 +160,14 @@ struct TodoFormView: View {
         }
 
         formState.reset()
-        navigationManager.navigateToTodos()
+        navigationManager.pop()
     }
 
     private func deleteTodo() {
         if let todo = todo {
             manager.deleteTodo(todo)
             formState.reset()
-            navigationManager.navigateToTodos()
+            navigationManager.pop()
         }
     }
 }

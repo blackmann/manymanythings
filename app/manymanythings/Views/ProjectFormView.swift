@@ -40,7 +40,7 @@ struct ProjectFormView: View {
 
                 HStack(spacing: 4) {
                     Button(action: {
-                        navigationManager.goBack()
+                        navigationManager.pop()
                     }) {
                         Image(systemName: "x.circle")
                             .font(.system(size: 13))
@@ -124,7 +124,7 @@ struct ProjectFormView: View {
         }
 
         if success {
-            navigationManager.goBack()
+            navigationManager.pop()
         } else {
             showDuplicateError = true
         }
