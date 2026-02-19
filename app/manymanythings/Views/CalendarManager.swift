@@ -11,6 +11,7 @@ class CalendarManager {
     var viewMode: CalendarViewMode = .twoWeek
     var currentOffset: Int = 0
     var selectedDate: Date = Date()
+    var showHeatmap: Bool = false
 
     private let calendar = Calendar.current
 
@@ -125,6 +126,10 @@ class CalendarManager {
     func toggleViewMode() {
         viewMode = viewMode == .twoWeek ? .month : .twoWeek
         currentOffset = 0
+    }
+
+    func toggleHeatmap() {
+        showHeatmap.toggle()
     }
 
     func selectDate(_ date: Date) {

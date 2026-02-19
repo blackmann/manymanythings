@@ -5,6 +5,10 @@ struct TodoFormView: View {
     @Environment(NavigationManager.self) private var navigationManager
     @Environment(TodoFormState.self) private var formState
 
+    @FetchRequest(
+        sortDescriptors: [NSSortDescriptor(keyPath: \Project.name, ascending: true)]
+    ) private var projects: FetchedResults<Project>
+
     let todo: Todo?
 
     init(todo: Todo? = nil) {
@@ -118,10 +122,10 @@ struct TodoFormView: View {
                                 formState.project = nil
                             }
 
-                            if !manager.projects.isEmpty {
+                            if !projects.isEmpty {
                                 Divider()
 
-                                ForEach(manager.projects, id: \.id) { project in
+                                ForEach(projects, id: \.id) { project in
                                     Button(project.name ?? "Unnamed") {
                                         formState.project = project
                                     }

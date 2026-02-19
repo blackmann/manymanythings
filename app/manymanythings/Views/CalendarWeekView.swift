@@ -7,9 +7,15 @@ struct CalendarWeekView: View {
     @State private var events: [Date: [EKEvent]] = [:]
 
     var body: some View {
-        CalendarGridView(eventsByDate: events)
-            .task(id: manager.displayedDateRange) {
-                events = await eventManager.fetchEvents(for: manager.displayedDateRange)
+        Group {
+            if manager.showHeatmap {
+                ActivityHeatmapView()
+            } else {
+                CalendarGridView(eventsByDate: events)
             }
+        }
+        .task(id: manager.displayedDateRange) {
+            events = await eventManager.fetchEvents(for: manager.displayedDateRange)
+        }
     }
 }

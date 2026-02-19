@@ -201,6 +201,88 @@ class TodoManager {
         }
     }
 
+    func completedTodosCountByDate(for dateRange: ClosedRange<Date>, project: Project? = nil) -> [Date: Int] {
+        let calendar = Calendar.current
+        let rangeStart = calendar.startOfDay(for: dateRange.lowerBound)
+        let rangeEnd = calendar.startOfDay(for: dateRange.upperBound)
+        guard let nextDayAfterRange = calendar.date(byAdding: .day, value: 1, to: rangeEnd) else {
+            return [:]
+        }
+
+        let request = Todo.fetchRequest()
+        if let project {
+            request.predicate = NSPredicate(
+                format: "completedAt >= %@ AND completedAt < %@ AND project == %@",
+                rangeStart as NSDate,
+                nextDayAfterRange as NSDate,
+                project
+            )
+        } else {
+            request.predicate = NSPredicate(
+                format: "completedAt >= %@ AND completedAt < %@",
+                rangeStart as NSDate,
+                nextDayAfterRange as NSDate
+            )
+        }
+
+        do {
+            let completedTodos = try context.fetch(request)
+            var countsByDate: [Date: Int] = [:]
+
+            for todo in completedTodos {
+                guard let completedAt = todo.completedAt else { continue }
+                let day = calendar.startOfDay(for: completedAt)
+                countsByDate[day, default: 0] += 1
+            }
+
+            return countsByDate
+        } catch {
+            print("Failed to fetch completed todos by date: \(error)")
+            return [:]
+        }
+    }
+
+    func createdTodosCountByDate(for dateRange: ClosedRange<Date>, project: Project? = nil) -> [Date: Int] {
+        let calendar = Calendar.current
+        let rangeStart = calendar.startOfDay(for: dateRange.lowerBound)
+        let rangeEnd = calendar.startOfDay(for: dateRange.upperBound)
+        guard let nextDayAfterRange = calendar.date(byAdding: .day, value: 1, to: rangeEnd) else {
+            return [:]
+        }
+
+        let request = Todo.fetchRequest()
+        if let project {
+            request.predicate = NSPredicate(
+                format: "createdAt >= %@ AND createdAt < %@ AND project == %@",
+                rangeStart as NSDate,
+                nextDayAfterRange as NSDate,
+                project
+            )
+        } else {
+            request.predicate = NSPredicate(
+                format: "createdAt >= %@ AND createdAt < %@",
+                rangeStart as NSDate,
+                nextDayAfterRange as NSDate
+            )
+        }
+
+        do {
+            let createdTodos = try context.fetch(request)
+            var countsByDate: [Date: Int] = [:]
+
+            for todo in createdTodos {
+                guard let createdAt = todo.createdAt else { continue }
+                let day = calendar.startOfDay(for: createdAt)
+                countsByDate[day, default: 0] += 1
+            }
+
+            return countsByDate
+        } catch {
+            print("Failed to fetch created todos by date: \(error)")
+            return [:]
+        }
+    }
+
     private func saveContext() {
         if context.hasChanges {
             do {

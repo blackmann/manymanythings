@@ -12,6 +12,11 @@ struct TodoListView: View {
         .padding(.vertical, 8)
         .background(Color.secondary.opacity(0.05))
 
+      TodoActivityBarChart()
+        .padding(.horizontal, 8)
+        .padding(.top, 6)
+        .padding(.bottom, 2)
+
       ScrollView {
         if manager.filteredTodos.isEmpty {
           emptyStateView
@@ -108,7 +113,7 @@ struct TodoListHeader: View {
       .padding(.vertical, 6)
     }
     .background(Color.secondary.opacity(0.1))
-    .clipShape(RoundedRectangle(cornerRadius: 6))
+    .clipShape(RoundedRectangle(cornerRadius: 10))
   }
 }
 
