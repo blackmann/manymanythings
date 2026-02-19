@@ -3,16 +3,19 @@ import SwiftUI
 struct StyledPicker<Content: View>: View {
     let label: String
     let accentColor: Color
+    let isEmbedded: Bool
     @ViewBuilder let menuContent: () -> Content
     @State private var isHovering = false
 
     init(
         label: String,
         accentColor: Color = .blue,
+        isEmbedded: Bool = false,
         @ViewBuilder menuContent: @escaping () -> Content
     ) {
         self.label = label
         self.accentColor = accentColor
+        self.isEmbedded = isEmbedded
         self.menuContent = menuContent
     }
 
@@ -24,6 +27,7 @@ struct StyledPicker<Content: View>: View {
                 RoundedRectangle(cornerRadius: 1)
                     .fill(accentColor)
                     .frame(width: 3, height: 14)
+                    .padding(.leading, isEmbedded ? 6 : 0)
 
                 Text(label)
                     .font(.system(size: 12))
@@ -35,10 +39,10 @@ struct StyledPicker<Content: View>: View {
                     .foregroundStyle(.secondary)
             }
             .foregroundStyle(.primary)
-            .padding(.horizontal, 10)
-            .padding(.vertical, 8)
-            .background(Color.secondary.opacity(isHovering ? 0.15 : 0.1))
-            .clipShape(RoundedRectangle(cornerRadius: 6))
+            .padding(.horizontal, isEmbedded ? 0 : 10)
+            .padding(.vertical, isEmbedded ? 0 : 8)
+            .background(isEmbedded ? Color.clear : Color.secondary.opacity(isHovering ? 0.15 : 0.1))
+            .clipShape(RoundedRectangle(cornerRadius: isEmbedded ? 0 : 6))
             .contentShape(Rectangle())
         }
         .buttonStyle(.plain)

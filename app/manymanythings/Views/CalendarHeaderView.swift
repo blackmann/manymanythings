@@ -39,7 +39,7 @@ struct CalendarHeaderView: View {
                 .frame(height: 12)
 
             Button(action: { manager.toggleViewMode() }) {
-                Image(systemName: manager.viewMode == .twoWeek ? "calendar" : "calendar.badge.clock")
+                Image(systemName: manager.viewMode == .twoWeek ? "calendar" : "calendar.badge")
                     .font(.system(size: 12))
             }
             .buttonStyle(.plain)

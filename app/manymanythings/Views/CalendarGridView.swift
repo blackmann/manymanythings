@@ -90,12 +90,24 @@ struct DateCell: View {
                     .font(.system(size: 13, weight: .medium))
                     .foregroundStyle(isToday ? .blue : (isCurrentMonth ? .primary : .secondary))
 
-                HStack(spacing: 2) {
-                    ForEach(Array(events.prefix(3)), id: \.eventIdentifier) { event in
-                        Circle()
-                            .fill(Color(cgColor: event.calendar.cgColor))
-                            .opacity(isCurrentMonth ? 1.0 : 0.3)
-                            .frame(width: 3, height: 3)
+                let visibleEvents = Array(events.prefix(3))
+                HStack(spacing: 0) {
+                    ForEach(Array(visibleEvents.enumerated()), id: \.element.eventIdentifier) { index, event in
+                        let isFirst = index == 0
+                        let isLast = index == visibleEvents.count - 1
+
+                        UnevenRoundedRectangle(
+                            cornerRadii: .init(
+                                topLeading: isFirst ? 1.5 : 0,
+                                bottomLeading: isFirst ? 1.5 : 0,
+                                bottomTrailing: isLast ? 1.5 : 0,
+                                topTrailing: isLast ? 1.5 : 0
+                            ),
+                            style: .continuous
+                        )
+                        .fill(Color(cgColor: event.calendar.cgColor))
+                        .opacity(isCurrentMonth ? 1.0 : 0.3)
+                        .frame(width: 4, height: 4)
                     }
                 }
                 .frame(height: 4)

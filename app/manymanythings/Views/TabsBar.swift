@@ -15,7 +15,7 @@ struct HoverableButtonStyle: ViewModifier {
         content
             .padding(2)
             .background(
-                RoundedRectangle(cornerRadius: 4)
+                RoundedRectangle(cornerRadius: 12)
                     .fill(
                         isActive
                             ? Color.secondary.opacity(0.15)
@@ -39,57 +39,52 @@ extension View {
 struct TabsBar: View {
     @Environment(NavigationManager.self) private var navigationManager
 
+    private var isNewTodoFormOpen: Bool {
+        guard case .todoForm(nil) = navigationManager.stack.last else {
+            return false
+        }
+        return true
+    }
+
+    private struct SwitchTabItem {
+        let tab: AppTab
+        let title: String
+        let icon: String
+        let action: (NavigationManager) -> Void
+    }
+
+    private let switchTabs: [SwitchTabItem] = [
+        SwitchTabItem(
+            tab: .calendar,
+            title: "Calendar",
+            icon: "calendar",
+            action: { $0.navigateToCalendar() }
+        ),
+        SwitchTabItem(
+            tab: .todos,
+            title: "Todos",
+            icon: "list.bullet.below.rectangle",
+            action: { $0.navigateToTodos() }
+        ),
+    ]
+
     var body: some View {
         VStack {
-            HStack(spacing: 0) {
-
-                Button(action: {
-                    navigationManager.navigateToCalendar()
-                }) {
-                    Image(systemName: "calendar")
-                        .hoverableButton(
-                            isActive: navigationManager.currentTab == .calendar
-                        )
+            HStack(spacing: 2) {
+                ForEach(switchTabs, id: \.title) { item in
+                    switchTabButton(item)
                 }
-                .buttonStyle(.plain)
 
-                Button(action: {
-                    navigationManager.navigateToProjects()
-                }) {
-                    Image(systemName: "folder")
-                        .hoverableButton(
-                            isActive: navigationManager.currentTab == .projects
-                        )
-                }
-                .buttonStyle(.plain)
-
-                Button(action: {
-                    navigationManager.navigateToTodos()
-                }) {
-                    Image(systemName: "checklist.unchecked")
-                        .hoverableButton(
-                            isActive: navigationManager.currentTab == .todos
-                        )
-                }
-                .buttonStyle(.plain)
-
-                Button(action: {
+                iconButton(systemName: "plus", accessibilityLabel: "New Todo") {
                     navigationManager.navigateToTodoForm()
-                }) {
-                    Image(systemName: "plus")
-                        .hoverableButton()
                 }
-                .buttonStyle(.plain)
+                .disabled(isNewTodoFormOpen)
 
-                Spacer()
+                Spacer(minLength: 4)
 
-                Button(action: {
+                iconButton(systemName: "power", accessibilityLabel: "Quit") {
                     NSApplication.shared.terminate(nil)
-                }) {
-                    Image(systemName: "power")
-                        .hoverableButton()
                 }
-                .buttonStyle(.plain)
             }
             .font(.system(size: 12))
             .fontWeight(.bold)
@@ -99,5 +94,52 @@ struct TabsBar: View {
         .padding(.vertical, 1)
         .background(Color.secondary.opacity(0.05))
         .clipShape(RoundedRectangle(cornerRadius: 8))
+    }
+
+    private func switchTabButton(_ item: SwitchTabItem) -> some View {
+        let isActive = navigationManager.currentTab == item.tab
+        let itemIndex = switchTabs.firstIndex(where: { $0.tab == item.tab }) ?? 0
+        let previousIndex = switchTabs.firstIndex(where: { $0.tab == navigationManager.previousTab }) ?? 0
+        let insertionEdge: Edge = itemIndex >= previousIndex ? .trailing : .leading
+
+        return Button(action: {
+            item.action(navigationManager)
+        }) {
+            HStack(spacing: 4) {
+                Image(systemName: item.icon)
+
+                if isActive {
+                    Text(item.title)
+                        .font(.system(size: 10, weight: .semibold))
+                        .lineLimit(1)
+                        .fixedSize(horizontal: true, vertical: false)
+                        .transition(
+                            .asymmetric(
+                                insertion: .move(edge: insertionEdge).combined(with: .opacity),
+                                removal: .opacity
+                            )
+                        )
+                }
+            }
+            .padding(.horizontal, isActive ? 4 : 0)
+            .hoverableButton(isActive: isActive)
+            .animation(.easeInOut(duration: 0.18), value: isActive)
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel(item.title)
+        .accessibilityValue(isActive ? "Active tab" : "Inactive tab")
+    }
+
+    private func iconButton(
+        systemName: String,
+        accessibilityLabel: String,
+        action: @escaping () -> Void
+    ) -> some View {
+        Button(action: action) {
+            Image(systemName: systemName)
+                .hoverableButton()
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel(accessibilityLabel)
     }
 }

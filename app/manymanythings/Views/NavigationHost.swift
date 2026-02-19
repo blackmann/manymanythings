@@ -75,7 +75,7 @@ struct NavigationHost: View {
         case .push, .pop:
             return .easeInOut(duration: 0.18)
         case .reset, .switchTab:
-            return nil
+            return .easeInOut(duration: 0.12)
         }
     }
 

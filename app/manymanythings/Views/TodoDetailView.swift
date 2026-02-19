@@ -92,9 +92,7 @@ struct TodoDetailView: View {
                                     ? "checkmark.circle.fill" : "circle"
                             )
                             .font(.system(size: 16))
-                            .foregroundStyle(
-                                todo.isCompleted ? .green : projectColor
-                            )
+                            .foregroundStyle(projectColor)
                         }
                         .buttonStyle(.plain)
 

@@ -123,7 +123,7 @@ struct DateTodoRow: View {
             }) {
                 Image(systemName: todo.isCompleted ? "checkmark.circle.fill" : "circle")
                     .font(.system(size: 14))
-                    .foregroundStyle(todo.isCompleted ? .green : projectColor)
+                    .foregroundStyle(projectColor)
             }
             .buttonStyle(.plain)
 

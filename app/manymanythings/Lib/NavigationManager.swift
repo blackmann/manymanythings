@@ -11,6 +11,33 @@ enum AppRoute {
     case todoDetail(Todo)
     case todoForm(Todo?)
     case projectForm(Project?)
+
+    func isSameRoute(as other: AppRoute) -> Bool {
+        switch (self, other) {
+        case let (.todoDetail(lhs), .todoDetail(rhs)):
+            return lhs.objectID == rhs.objectID
+        case let (.todoForm(lhs), .todoForm(rhs)):
+            switch (lhs, rhs) {
+            case let (.some(lhsTodo), .some(rhsTodo)):
+                return lhsTodo.objectID == rhsTodo.objectID
+            case (.none, .none):
+                return true
+            default:
+                return false
+            }
+        case let (.projectForm(lhs), .projectForm(rhs)):
+            switch (lhs, rhs) {
+            case let (.some(lhsProject), .some(rhsProject)):
+                return lhsProject.objectID == rhsProject.objectID
+            case (.none, .none):
+                return true
+            default:
+                return false
+            }
+        default:
+            return false
+        }
+    }
 }
 
 enum NavigationAction {
@@ -23,18 +50,24 @@ enum NavigationAction {
 @Observable
 class NavigationManager {
     var currentTab: AppTab = .calendar
+    var previousTab: AppTab = .calendar
     var stack: [AppRoute] = []
     var lastAction: NavigationAction = .reset
     var navigationID: Int = 0
 
     func switchTab(_ tab: AppTab) {
         perform(.switchTab) {
+            previousTab = currentTab
             currentTab = tab
             stack.removeAll()
         }
     }
 
     func push(_ route: AppRoute) {
+        if let topRoute = stack.last, topRoute.isSameRoute(as: route) {
+            return
+        }
+
         perform(.push) {
             stack.append(route)
         }
@@ -85,12 +118,6 @@ class NavigationManager {
         lastAction = action
         navigationID += 1
 
-        if action == .push || action == .pop {
-            withAnimation(.easeInOut(duration: 0.18)) {
-                updates()
-            }
-        } else {
-            updates()
-        }
+        updates()
     }
 }
