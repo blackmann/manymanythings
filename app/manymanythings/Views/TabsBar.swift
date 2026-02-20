@@ -87,10 +87,6 @@ struct TabsBar: View {
                     openSettings()
                     NSApp.activate(ignoringOtherApps: true)
                 }
-
-                iconButton(systemName: "power", accessibilityLabel: "Quit") {
-                    NSApplication.shared.terminate(nil)
-                }
             }
             .font(.system(size: 12))
             .fontWeight(.bold)

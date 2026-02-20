@@ -21,13 +21,37 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSPopoverDelegate {
     private var todoFormState = TodoFormState()
     private var eventMonitor: Any?
     private var midnightTimer: Timer?
+    private lazy var statusItemMenu: NSMenu = {
+        let menu = NSMenu()
+
+        let settingsItem = NSMenuItem(
+            title: "Settings",
+            action: #selector(openSettings),
+            keyEquivalent: ","
+        )
+        settingsItem.target = self
+        menu.addItem(settingsItem)
+
+        menu.addItem(.separator())
+
+        let quitItem = NSMenuItem(
+            title: "Quit",
+            action: #selector(quitApp),
+            keyEquivalent: "q"
+        )
+        quitItem.target = self
+        menu.addItem(quitItem)
+
+        return menu
+    }()
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
 
         if let button = statusItem.button {
-            button.action = #selector(togglePopover)
+            button.action = #selector(handleStatusItemClick)
             button.target = self
+            button.sendAction(on: [.leftMouseUp, .rightMouseUp])
             updateStatusItemIcon()
         }
 
@@ -60,6 +84,14 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSPopoverDelegate {
         registerLaunchAtLoginOnFirstLaunch()
     }
 
+    @objc private func handleStatusItemClick() {
+        if let event = NSApp.currentEvent, event.type == .rightMouseUp {
+            showStatusItemMenu()
+            return
+        }
+        togglePopover()
+    }
+
     @objc private func togglePopover() {
         guard let button = statusItem.button else { return }
 
@@ -70,6 +102,30 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSPopoverDelegate {
             NSApp.activate(ignoringOtherApps: true)
             startEventMonitor()
         }
+    }
+
+    private func showStatusItemMenu() {
+        guard let button = statusItem.button else { return }
+
+        closePopover()
+        statusItem.menu = statusItemMenu
+        button.performClick(nil)
+        statusItem.menu = nil
+    }
+
+    @objc private func openSettings() {
+        closePopover()
+        NSApp.activate(ignoringOtherApps: true)
+
+        if #available(macOS 14.0, *) {
+            NSApp.sendAction(Selector(("showSettingsWindow:")), to: nil, from: nil)
+        } else {
+            NSApp.sendAction(Selector(("showPreferencesWindow:")), to: nil, from: nil)
+        }
+    }
+
+    @objc private func quitApp() {
+        NSApp.terminate(nil)
     }
 
     private func closePopover() {
