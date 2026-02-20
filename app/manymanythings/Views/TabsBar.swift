@@ -38,6 +38,7 @@ extension View {
 
 struct TabsBar: View {
     @Environment(NavigationManager.self) private var navigationManager
+    @Environment(\.openSettings) private var openSettings
 
     private var isNewTodoFormOpen: Bool {
         guard case .todoForm(nil) = navigationManager.stack.last else {
@@ -81,6 +82,11 @@ struct TabsBar: View {
                 .disabled(isNewTodoFormOpen)
 
                 Spacer(minLength: 4)
+
+                iconButton(systemName: "gearshape", accessibilityLabel: "Settings") {
+                    openSettings()
+                    NSApp.activate(ignoringOtherApps: true)
+                }
 
                 iconButton(systemName: "power", accessibilityLabel: "Quit") {
                     NSApplication.shared.terminate(nil)

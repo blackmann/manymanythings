@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		BCA041D930F1000000A1A001 /* Sparkle in Frameworks */ = {isa = PBXBuildFile; productRef = BCA041DB30F1000000A1A001 /* Sparkle */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		BC780DF52F123D2700B5AE55 /* manymanythings.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = manymanythings.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -23,6 +27,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BCA041D930F1000000A1A001 /* Sparkle in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -65,6 +70,7 @@
 			);
 			name = manymanythings;
 			packageProductDependencies = (
+				BCA041DB30F1000000A1A001 /* Sparkle */,
 			);
 			productName = manymanythings;
 			productReference = BC780DF52F123D2700B5AE55 /* manymanythings.app */;
@@ -98,6 +104,9 @@
 			productRefGroup = BC780DF62F123D2700B5AE55 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
+			packageReferences = (
+				BCA041DA30F1000000A1A001 /* XCRemoteSwiftPackageReference "Sparkle" */,
+			);
 			targets = (
 				BC780DF42F123D2700B5AE55 /* manymanythings */,
 			);
@@ -253,13 +262,14 @@
 				CODE_SIGN_ENTITLEMENTS = manymanythings/manymanythings.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_TEAM = 2J67DD4W6M;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = manymanythings/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Many Many Things";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				INFOPLIST_KEY_LSUIElement = YES;
@@ -291,13 +301,14 @@
 				CODE_SIGN_ENTITLEMENTS = manymanythings/manymanythings.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_TEAM = 2J67DD4W6M;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = manymanythings/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Many Many Things";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				INFOPLIST_KEY_LSUIElement = YES;
@@ -323,6 +334,17 @@
 		};
 /* End XCBuildConfiguration section */
 
+/* Begin XCRemoteSwiftPackageReference section */
+		BCA041DA30F1000000A1A001 /* XCRemoteSwiftPackageReference "Sparkle" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/sparkle-project/Sparkle";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
 /* Begin XCConfigurationList section */
 		BC780DF02F123D2700B5AE55 /* Build configuration list for PBXProject "manymanythings" */ = {
 			isa = XCConfigurationList;
@@ -343,6 +365,14 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		BCA041DB30F1000000A1A001 /* Sparkle */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BCA041DA30F1000000A1A001 /* XCRemoteSwiftPackageReference "Sparkle" */;
+			productName = Sparkle;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = BC780DED2F123D2700B5AE55 /* Project object */;
 }

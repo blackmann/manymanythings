@@ -6,9 +6,11 @@
 //
 
 import AppKit
+import ServiceManagement
 import SwiftUI
 
 class AppDelegate: NSObject, NSApplicationDelegate, NSPopoverDelegate {
+    private let hasRegisteredLaunchAtLoginKey = "hasRegisteredLaunchAtLogin"
     private var statusItem: NSStatusItem!
     private var popover: NSPopover!
     private var iconManager = MenuBarIconManager()
@@ -55,6 +57,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSPopoverDelegate {
         todoManager.fetchTodos()
 
         setupMidnightTimer()
+        registerLaunchAtLoginOnFirstLaunch()
     }
 
     @objc private func togglePopover() {
@@ -156,6 +159,14 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSPopoverDelegate {
             self?.updateTodoCount()
             self?.scheduleMidnightRefresh()
         }
+    }
+
+    private func registerLaunchAtLoginOnFirstLaunch() {
+        let defaults = UserDefaults.standard
+        guard !defaults.bool(forKey: hasRegisteredLaunchAtLoginKey) else { return }
+
+        try? SMAppService.mainApp.register()
+        defaults.set(true, forKey: hasRegisteredLaunchAtLoginKey)
     }
 
     // MARK: - NSPopoverDelegate

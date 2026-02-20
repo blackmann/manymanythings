@@ -4,5 +4,9 @@
 <dict>
 	<key>NSCalendarsFullAccessUsageDescription</key>
 	<string>Many Many Things needs access to your calendar to display upcoming events.</string>
+	<key>SUFeedURL</key>
+	<string>https://degreat.co.uk/manymanythings/appcast.xml</string>
+	<key>SUPublicEDKey</key>
+  <string>4V5vI3s1kbHC4B236vv47LrlR6ZcKx4PGwGMCNyrpm4=</string>
 </dict>
 </plist>
