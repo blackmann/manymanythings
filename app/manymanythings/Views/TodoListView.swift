@@ -121,6 +121,7 @@ struct TodoRow: View {
   @ObservedObject var todo: Todo
   @Environment(TodoManager.self) private var manager
   @Environment(NavigationManager.self) private var navigationManager
+  @Environment(ToastManager.self) private var toastManager
   @State private var isHovering = false
 
   private var projectColor: Color {
@@ -138,7 +139,9 @@ struct TodoRow: View {
   var body: some View {
     HStack(spacing: 8) {
       Button(action: {
+        let willComplete = !todo.isCompleted
         manager.toggleTodoCompletion(todo)
+        willComplete ? toastManager.success("Todo done") : toastManager.neutral("Todo uncompleted")
       }) {
         Image(systemName: todo.isCompleted ? "checkmark.circle.fill" : "circle")
           .font(.system(size: 14))
@@ -178,6 +181,7 @@ struct TodoRow: View {
         // Hover button (same position, shown on hover)
         Button(action: {
           manager.setWorkOnDateToToday(todo)
+          toastManager.success("Scheduled for today")
         }) {
           Image(systemName: "arrow.down")
             .font(.system(size: 10))
@@ -224,12 +228,14 @@ struct TodoRow: View {
 
       Button(action: {
         manager.setWorkOnDateToToday(todo)
+        toastManager.success("Scheduled for today")
       }) {
         Label("Work on Today", systemImage: "arrow.down")
       }
 
       Button(action: {
         manager.setWorkOnDateToTomorrow(todo)
+        toastManager.neutral("Scheduled for tomorrow")
       }) {
         Label("Work on Tomorrow", systemImage: "arrow.right")
       }
@@ -237,6 +243,7 @@ struct TodoRow: View {
       if todo.workOnDate != nil {
         Button(action: {
           manager.clearWorkOnDate(todo)
+          toastManager.success("Schedule cleared")
         }) {
           Label("Clear Scheduled Date", systemImage: "xmark.circle")
         }
@@ -248,6 +255,7 @@ struct TodoRow: View {
         role: .destructive,
         action: {
           manager.deleteTodo(todo)
+          toastManager.error("Todo deleted")
         }
       ) {
         Label("Delete", systemImage: "trash")

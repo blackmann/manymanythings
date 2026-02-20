@@ -214,6 +214,7 @@ struct DateTodoRow: View {
   @ObservedObject var todo: Todo
   @Environment(TodoManager.self) private var manager
   @Environment(NavigationManager.self) private var navigationManager
+  @Environment(ToastManager.self) private var toastManager
   @State private var isHovering = false
 
   private var projectColor: Color {
@@ -226,7 +227,9 @@ struct DateTodoRow: View {
   var body: some View {
     HStack(spacing: 8) {
       Button(action: {
+        let willComplete = !todo.isCompleted
         manager.toggleTodoCompletion(todo)
+        willComplete ? toastManager.success("Todo done") : toastManager.neutral("Todo uncompleted")
       }) {
         Image(systemName: todo.isCompleted ? "checkmark.circle.fill" : "circle")
           .font(.system(size: 14))
@@ -272,18 +275,21 @@ struct DateTodoRow: View {
 
       Button(action: {
         manager.setWorkOnDateToToday(todo)
+        toastManager.success("Scheduled for today")
       }) {
         Label("Work on Today", systemImage: "arrow.down")
       }
 
       Button(action: {
         manager.setWorkOnDateToTomorrow(todo)
+        toastManager.neutral("Scheduled for tomorrow")
       }) {
         Label("Work on Tomorrow", systemImage: "arrow.right")
       }
 
       Button(action: {
         manager.clearWorkOnDate(todo)
+        toastManager.success("Schedule cleared")
       }) {
         Label("Remove from Date", systemImage: "xmark.circle")
       }
@@ -294,6 +300,7 @@ struct DateTodoRow: View {
         role: .destructive,
         action: {
           manager.deleteTodo(todo)
+          toastManager.error("Todo deleted")
         }
       ) {
         Label("Delete", systemImage: "trash")

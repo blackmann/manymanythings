@@ -100,13 +100,13 @@
 			);
 			mainGroup = BC780DEC2F123D2700B5AE55;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				BCA041DA30F1000000A1A001 /* XCRemoteSwiftPackageReference "Sparkle" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = BC780DF62F123D2700B5AE55 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
-			packageReferences = (
-				BCA041DA30F1000000A1A001 /* XCRemoteSwiftPackageReference "Sparkle" */,
-			);
 			targets = (
 				BC780DF42F123D2700B5AE55 /* manymanythings */,
 			);
@@ -262,7 +262,7 @@
 				CODE_SIGN_ENTITLEMENTS = manymanythings/manymanythings.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 9;
 				DEVELOPMENT_TEAM = 2J67DD4W6M;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -280,7 +280,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 15.0;
-				MARKETING_VERSION = 2026.2.19;
+				MARKETING_VERSION = 2026.2.20;
 				PRODUCT_BUNDLE_IDENTIFIER = uk.co.degreat.manymanythings;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
@@ -301,7 +301,7 @@
 				CODE_SIGN_ENTITLEMENTS = manymanythings/manymanythings.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 9;
 				DEVELOPMENT_TEAM = 2J67DD4W6M;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -319,7 +319,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 15.0;
-				MARKETING_VERSION = 2026.2.19;
+				MARKETING_VERSION = 2026.2.20;
 				PRODUCT_BUNDLE_IDENTIFIER = uk.co.degreat.manymanythings;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
@@ -333,17 +333,6 @@
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
-
-/* Begin XCRemoteSwiftPackageReference section */
-		BCA041DA30F1000000A1A001 /* XCRemoteSwiftPackageReference "Sparkle" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/sparkle-project/Sparkle";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 2.0.0;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCConfigurationList section */
 		BC780DF02F123D2700B5AE55 /* Build configuration list for PBXProject "manymanythings" */ = {
@@ -365,6 +354,17 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		BCA041DA30F1000000A1A001 /* XCRemoteSwiftPackageReference "Sparkle" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/sparkle-project/Sparkle";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
 		BCA041DB30F1000000A1A001 /* Sparkle */ = {

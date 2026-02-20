@@ -31,5 +31,6 @@ struct ContentView: View {
         .environment(NavigationManager())
         .environment(TodoManager(context: PersistenceController.preview.container.viewContext))
         .environment(TodoFormState())
+        .environment(ToastManager())
         .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
 }

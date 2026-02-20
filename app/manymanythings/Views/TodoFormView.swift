@@ -4,6 +4,7 @@ struct TodoFormView: View {
     @Environment(TodoManager.self) private var manager
     @Environment(NavigationManager.self) private var navigationManager
     @Environment(TodoFormState.self) private var formState
+    @Environment(ToastManager.self) private var toastManager
 
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \Project.name, ascending: true)]
@@ -165,6 +166,7 @@ struct TodoFormView: View {
 
         formState.reset()
         navigationManager.pop()
+        toastManager.success(isEditing ? "Todo updated" : "Todo added")
     }
 
     private func deleteTodo() {
@@ -172,6 +174,7 @@ struct TodoFormView: View {
             manager.deleteTodo(todo)
             formState.reset()
             navigationManager.pop()
+            toastManager.error("Todo deleted")
         }
     }
 }

@@ -3,6 +3,7 @@ import SwiftUI
 struct TodoDetailView: View {
     @Environment(TodoManager.self) private var manager
     @Environment(NavigationManager.self) private var navigationManager
+    @Environment(ToastManager.self) private var toastManager
 
     @ObservedObject var todo: Todo
 
@@ -85,7 +86,9 @@ struct TodoDetailView: View {
                 VStack(alignment: .leading, spacing: 12) {
                     HStack(spacing: 8) {
                         Button(action: {
+                            let willComplete = !todo.isCompleted
                             manager.toggleTodoCompletion(todo)
+                            willComplete ? toastManager.success("Todo done") : toastManager.neutral("Todo uncompleted")
                         }) {
                             Image(
                                 systemName: todo.isCompleted
@@ -161,6 +164,7 @@ struct TodoDetailView: View {
     private func deleteTodo() {
         manager.deleteTodo(todo)
         navigationManager.pop()
+        toastManager.error("Todo deleted")
     }
 }
 

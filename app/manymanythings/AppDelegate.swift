@@ -19,6 +19,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSPopoverDelegate {
     private var navigationManager = NavigationManager()
     private var todoManager = TodoManager()
     private var todoFormState = TodoFormState()
+    private var toastManager = ToastManager()
     private var eventMonitor: Any?
     private var midnightTimer: Timer?
     private lazy var statusItemMenu: NSMenu = {
@@ -70,6 +71,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSPopoverDelegate {
             .environment(navigationManager)
             .environment(todoManager)
             .environment(todoFormState)
+            .environment(toastManager)
         popover.contentViewController = NSHostingController(rootView: contentView)
 
         setupIconObserver()

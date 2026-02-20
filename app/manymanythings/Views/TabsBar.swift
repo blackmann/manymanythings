@@ -38,6 +38,7 @@ extension View {
 
 struct TabsBar: View {
     @Environment(NavigationManager.self) private var navigationManager
+    @Environment(ToastManager.self) private var toastManager
     @Environment(\.openSettings) private var openSettings
 
     private var isNewTodoFormOpen: Bool {
@@ -69,32 +70,73 @@ struct TabsBar: View {
         ),
     ]
 
+    private var tabsContent: some View {
+        HStack(spacing: 2) {
+            ForEach(switchTabs, id: \.title) { item in
+                switchTabButton(item)
+            }
+
+            iconButton(systemName: "plus", accessibilityLabel: "New Todo") {
+                navigationManager.navigateToTodoForm()
+            }
+            .disabled(isNewTodoFormOpen)
+
+            Spacer(minLength: 4)
+
+            iconButton(systemName: "gearshape", accessibilityLabel: "Settings") {
+                openSettings()
+                NSApp.activate(ignoringOtherApps: true)
+            }
+        }
+        .font(.system(size: 12))
+        .fontWeight(.bold)
+        .foregroundStyle(.secondary)
+    }
+
+    private var toastContent: some View {
+        Group {
+            if let toast = toastManager.currentToast {
+                HStack(spacing: 4) {
+                    Image(systemName: toast.type.icon)
+                        .foregroundStyle(toast.type.color)
+                    Text(toast.message)
+                        .font(.system(size: 10, weight: .semibold))
+                        .lineLimit(1)
+                }
+                .padding(.horizontal, 6)
+            }
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+    }
+
     var body: some View {
         VStack {
-            HStack(spacing: 2) {
-                ForEach(switchTabs, id: \.title) { item in
-                    switchTabButton(item)
-                }
+            ZStack {
+                tabsContent
+                    .opacity(toastManager.isShowingToast ? 0 : 1)
+                    .offset(y: toastManager.isShowingToast ? -8 : 0)
 
-                iconButton(systemName: "plus", accessibilityLabel: "New Todo") {
-                    navigationManager.navigateToTodoForm()
-                }
-                .disabled(isNewTodoFormOpen)
-
-                Spacer(minLength: 4)
-
-                iconButton(systemName: "gearshape", accessibilityLabel: "Settings") {
-                    openSettings()
-                    NSApp.activate(ignoringOtherApps: true)
-                }
+                toastContent
+                    .opacity(toastManager.isShowingToast ? 1 : 0)
+                    .offset(y: toastManager.isShowingToast ? 0 : 8)
             }
-            .font(.system(size: 12))
-            .fontWeight(.bold)
-            .foregroundStyle(.secondary)
         }
         .padding(.horizontal, 2)
         .padding(.vertical, 1)
-        .background(Color.secondary.opacity(0.05))
+        .background(
+            ZStack {
+                Color.secondary.opacity(0.05)
+
+                if let toast = toastManager.currentToast {
+                    LinearGradient(
+                        colors: [toast.type.color.opacity(0.25), .clear],
+                        startPoint: .leading,
+                        endPoint: UnitPoint(x: 0.75, y: 0.5)
+                    )
+                    .opacity(toastManager.isShowingToast ? 1 : 0)
+                }
+            }
+        )
         .clipShape(RoundedRectangle(cornerRadius: 8))
     }
 
