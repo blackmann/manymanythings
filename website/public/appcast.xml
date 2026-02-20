@@ -2,20 +2,20 @@
 <rss version="2.0" xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle" xmlns:dc="http://purl.org/dc/elements/1.1/">
     <channel>
         <title>Many Many Things Changelog</title>
-        <link>https://blackmann.github.io/manymanythings/appcast.xml</link>
+        <link>https://degreat.co.uk/manymanythings/appcast.xml</link>
         <description>Most recent changes with links to updates.</description>
         <language>en</language>
         <item>
             <title>Version 2026.2.19</title>
-            <sparkle:version>5</sparkle:version>
+            <sparkle:version>7</sparkle:version>
             <sparkle:shortVersionString>2026.2.19</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
-            <pubDate>Fri, 20 Feb 2026 12:00:00 +0000</pubDate>
+            <pubDate>Fri, 20 Feb 2026 13:11:05 +0000</pubDate>
             <enclosure
                 url="https://compa.eu-central-1.linodeobjects.com/mmt%2Fmanymanythings.zip"
-                length="0"
+                length="1738451"
                 type="application/octet-stream"
-                sparkle:edSignature="SIGN_WITH_sign_update_TOOL"
+                sparkle:edSignature="5iYYAOfcgjUmakXIyGO+2NkFumI92O2fWDLmoMG2WTYlw6HHAEUPB5JiZuHncnHWJ9ZeJMSZsFH3Mhv9nI6uDQ=="
             />
         </item>
     </channel>
