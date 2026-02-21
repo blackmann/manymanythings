@@ -25,10 +25,12 @@ struct EventListView: View {
   @Environment(CalendarManager.self) private var manager
   @Environment(EventKitManager.self) private var eventManager
   @State private var events: [EKEvent] = []
+  @State private var unfinishedExpanded = false
 
   @FetchRequest private var todosForSelectedDate: FetchedResults<Todo>
   @FetchRequest private var scheduledTodosForDate: FetchedResults<Todo>
   @FetchRequest private var completedTodosForDate: FetchedResults<Todo>
+  @FetchRequest private var unfinishedTodos: FetchedResults<Todo>
 
   init() {
     let startOfToday = Calendar.current.startOfDay(for: Date())
@@ -47,6 +49,10 @@ struct EventListView: View {
       startOfToday as NSDate,
       endOfToday as NSDate
     )
+    let unfinishedTodosPredicate = NSPredicate(
+      format: "workOnDate != nil AND workOnDate < %@ AND isCompleted == NO",
+      startOfToday as NSDate
+    )
     _todosForSelectedDate = FetchRequest(
       sortDescriptors: [
         NSSortDescriptor(keyPath: \Todo.createdAt, ascending: false)
@@ -64,6 +70,13 @@ struct EventListView: View {
         NSSortDescriptor(keyPath: \Todo.createdAt, ascending: false)
       ],
       predicate: completedAtPredicate
+    )
+    _unfinishedTodos = FetchRequest(
+      sortDescriptors: [
+        NSSortDescriptor(keyPath: \Todo.workOnDate, ascending: true),
+        NSSortDescriptor(keyPath: \Todo.createdAt, ascending: false)
+      ],
+      predicate: unfinishedTodosPredicate
     )
   }
 
@@ -121,6 +134,43 @@ struct EventListView: View {
         }
         .padding(.top, 4)
       }
+
+      if Calendar.current.isDateInToday(manager.selectedDate)
+        && !unfinishedTodos.isEmpty
+      {
+        VStack(alignment: .leading, spacing: 0) {
+          Button(action: {
+            withAnimation(.easeInOut(duration: 0.2)) {
+              unfinishedExpanded.toggle()
+            }
+          }) {
+            HStack(spacing: 4) {
+              Image(systemName: "chevron.right")
+                .font(.system(size: 9, weight: .semibold))
+                .rotationEffect(.degrees(unfinishedExpanded ? 90 : 0))
+
+              Text("Unfinished")
+              Text("\(unfinishedTodos.count)")
+            }
+            .font(.system(size: 11, weight: .medium))
+            .foregroundStyle(.secondary)
+            .contentShape(Rectangle())
+          }
+          .buttonStyle(.plain)
+
+          if unfinishedExpanded {
+            VStack(spacing: 0) {
+              ForEach(unfinishedTodos, id: \.id) { todo in
+                DateTodoRow(todo: todo)
+              }
+            }
+            .padding(.top, 4)
+          }
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(.horizontal, 8)
+        .padding(.top, 4)
+      }
     }
     .task(
       id: EventListLoadID(
@@ -175,6 +225,10 @@ struct EventListView: View {
       format: "completedAt >= %@ AND completedAt < %@",
       startOfDay as NSDate,
       endOfDay as NSDate
+    )
+    unfinishedTodos.nsPredicate = NSPredicate(
+      format: "workOnDate != nil AND workOnDate < %@ AND isCompleted == NO",
+      startOfDay as NSDate
     )
 
     if manager.showHeatmap {

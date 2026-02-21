@@ -3,25 +3,19 @@
     <channel>
         <title>Many Many Things Changelog</title>
         <link>https://degreat.co.uk/manymanythings/appcast.xml</link>
-        <description>
-            This update includes the following changes:
-            - An updater to check for updates
-            - Settings to automatically check for updates
-            - Settings screen
-            - Quit moved to menu item context menu
-        </description>
+        <description>Show unfinished section on events list</description>
         <language>en</language>
         <item>
-            <title>Version 2026.2.20</title>
-            <sparkle:version>9</sparkle:version>
-            <sparkle:shortVersionString>2026.2.20</sparkle:shortVersionString>
+            <title>Version 2026.2.21</title>
+            <sparkle:version>10</sparkle:version>
+            <sparkle:shortVersionString>2026.2.21</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
-            <pubDate>Fri, 20 Feb 2026 14:38:54 +0000</pubDate>
+            <pubDate>Sat, 21 Feb 2026 14:19:51 +0000</pubDate>
             <enclosure
                 url="https://compa.eu-central-1.linodeobjects.com/mmt%2Fmanymanythings.zip"
-                length="1757606"
+                length="1767876"
                 type="application/octet-stream"
-                sparkle:edSignature="/ra6/9Z6gF9fHUe6YVAIVgdvY5RFmdmN8bOEVvKTnCWpU4+5XayvbYG9+er7HK9X6towZHQJaArCUMMDuBTTBw=="
+                sparkle:edSignature="lIb/jprXKFczzNqEoFWgmQedd6sNoU4bog5LQiyKX2I6beBZXtDHv1fKWtU96Bzt1NpwGca+UvnkkEbronlECg=="
             />
         </item>
     </channel>
