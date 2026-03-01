@@ -3,19 +3,19 @@
     <channel>
         <title>Many Many Things Changelog</title>
         <link>https://degreat.co.uk/manymanythings/appcast.xml</link>
-        <description>Make menu bar contrasty dynamically.</description>
+        <description>Most recent changes with links to updates.</description>
         <language>en</language>
         <item>
-            <title>Version 2026.3.1</title>
-            <sparkle:version>11</sparkle:version>
-            <sparkle:shortVersionString>2026.3.1</sparkle:shortVersionString>
+            <title>Version 2026.3.2</title>
+            <sparkle:version>13</sparkle:version>
+            <sparkle:shortVersionString>2026.3.2</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
-            <pubDate>Sun, 01 Mar 2026 21:42:12 +0000</pubDate>
+            <pubDate>Sun, 01 Mar 2026 22:07:29 +0000</pubDate>
             <enclosure
-                url="https://github.com/blackmann/manymanythings/releases/download/v2026.3.1/manymanythings.zip"
-                length="1768395"
+                url="https://github.com/blackmann/manymanythings/releases/download/v2026.3.2/manymanythings.zip"
+                length="1768344"
                 type="application/octet-stream"
-                sparkle:edSignature="m22iABLO70X3LbTMYbJPtsi8dtV5DclC/ezNeAWlZPU3pJOgmnFPfJ/9W9eGk7TkeT9x6SRsxwVXU7y9ZP0JBg=="
+                sparkle:edSignature="Kj51oxuXkcb8vExKJi8hVShgBqVZzzssfU66A+0jtK6WgCPQq2r341PTYqx7fBH6pIajCn3aMX3QxV0FOoOzAw=="
             />
         </item>
     </channel>

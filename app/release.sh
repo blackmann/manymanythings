@@ -8,6 +8,7 @@ PBXPROJ="$PROJECT/project.pbxproj"
 SCHEME="manymanythings"
 EXPORT_OPTS="$PROJECT_DIR/build/ExportOptions.plist"
 APPCAST="$SCRIPT_DIR/../website/public/appcast.xml"
+CASK="$SCRIPT_DIR/../../homebrew-brew/Casks/manymanythings.rb"
 BUILD_DIR="$PROJECT_DIR/build"
 ARCHIVE_PATH="$BUILD_DIR/manymanythings.xcarchive"
 EXPORT_PATH="$BUILD_DIR/export"
@@ -177,6 +178,16 @@ cat > "$APPCAST" << EOF
 EOF
 
 echo "    Updated $APPCAST"
+
+# --- Step 9: Update Homebrew cask ---
+
+echo ""
+echo "==> Updating Homebrew cask..."
+SHA256=$(shasum -a 256 "$ZIP_PATH" | awk '{print $1}')
+sed -i '' "s/version \".*\"/version \"$version\"/" "$CASK"
+sed -i '' "s/sha256 \".*\"/sha256 \"$SHA256\"/" "$CASK"
+echo "    Updated $CASK"
+echo "    sha256: $SHA256"
 
 # --- Done ---
 
