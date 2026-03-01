@@ -57,7 +57,7 @@ class MenuBarIconManager {
 
         image.unlockFocus()
 
-        image.isTemplate = false
+        image.isTemplate = true
 
         return image
     }

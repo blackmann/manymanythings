@@ -135,7 +135,16 @@ fi
 echo "    edSignature: $ED_SIGNATURE"
 echo "    File size: $FILE_LENGTH bytes"
 
-# --- Step 7: Update appcast.xml ---
+# --- Step 7: Create GitHub Release ---
+
+echo ""
+echo "==> Creating GitHub release v$version..."
+gh release create "v$version" "$ZIP_PATH" \
+    --title "v$version" \
+    --generate-notes
+echo "    GitHub release v$version created."
+
+# --- Step 8: Update appcast.xml ---
 
 echo ""
 echo "==> Updating appcast.xml..."
@@ -157,7 +166,7 @@ cat > "$APPCAST" << EOF
             <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
             <pubDate>$PUB_DATE</pubDate>
             <enclosure
-                url="https://compa.eu-central-1.linodeobjects.com/mmt%2Fmanymanythings.zip"
+                url="https://github.com/blackmann/manymanythings/releases/download/v$version/manymanythings.zip"
                 length="$FILE_LENGTH"
                 type="application/octet-stream"
                 sparkle:edSignature="$ED_SIGNATURE"
@@ -177,6 +186,5 @@ echo "  Release v$version (build $build) ready!"
 echo "========================================="
 echo ""
 echo "Next steps:"
-echo "  1. Upload $ZIP_PATH to Linode"
-echo "  2. Deploy the updated appcast.xml"
-echo "  3. Commit the version bump and appcast changes"
+echo "  1. Deploy the updated appcast.xml"
+echo "  2. Commit the version bump and appcast changes"
